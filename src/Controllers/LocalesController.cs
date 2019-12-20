@@ -20,6 +20,7 @@ namespace ParkingAbilityServer.Controllers
         [HttpGet]
         public async Task<IActionResult> LocaleAsync(string id)
         {
+            ViewData["Title"] = id;
             LocaleViewModel viewModel = await repository.LoadAsync(id);
 
             if (DateTime.UtcNow.Ticks % 2 == 0)
