@@ -1,8 +1,25 @@
 ﻿@model LocaleViewModel
 
-<p><a href="@Model.SourceUrl" target="_blank">View Source</a></p>
+@section Scripts
+{
+    @{
+        string appInsightsKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY");
+        bool enableAppInsights = !string.IsNullOrEmpty(appInsightsKey);
+    }
+    @if(enableAppInsights)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".view-source-standard").click(function () {
+                    window.appInsights.trackEvent({ name: 'InlineSourceContentClicked' });
+                });
+            });
+        </script>
+    }
+}
+
+<p><a href="@Model.SourceUrl" target="_blank" class="view-source-standard" id="@Model.Id">View @Model.Id</a></p>
 <div>
     <iframe src="@Model.SourceUrl" draggable="false" scrolling="auto">
-        <p>Your browser does not support iframes.</p>
     </iframe>
 </div>

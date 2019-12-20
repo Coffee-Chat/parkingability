@@ -1,4 +1,22 @@
 ﻿@model LocaleViewModel
 
-<p><a href="@Model.SourceUrl" target="_blank">View Source</a></p>
+@section Scripts
+{
+    @{
+        string appInsightsKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY");
+        bool enableAppInsights = !string.IsNullOrEmpty(appInsightsKey);
+    }
+    @if(enableAppInsights)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".view-source-custom").click(function () {
+                    window.appInsights.trackEvent({ name: 'CustomSourceContentClicked' });
+                });
+            });
+        </script>
+    }
+}
+
+<p><a href="@Model.SourceUrl" target="_blank" class="view-source-custom">View @Model.Id</a></p>
 @Html.Raw(Model.ReadContent())
