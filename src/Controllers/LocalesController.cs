@@ -10,10 +10,12 @@ namespace ParkingAbilityServer.Controllers
     public class LocalesController : Controller
     {
         private readonly IRepository repository;
+        private readonly IFlightProvider flightProvider;
 
-        public LocalesController(IRepository repository)
+        public LocalesController(IRepository repository, IFlightProvider flightProvider)
         {
             this.repository = repository;
+            this.flightProvider = flightProvider;
         }
 
         [Route("{id}")]
@@ -22,15 +24,9 @@ namespace ParkingAbilityServer.Controllers
         {
             ViewData["Title"] = id;
             LocaleViewModel viewModel = await repository.LoadAsync(id);
+            ViewData["Flight"] = await flightProvider.CalculateFlightAsync(id);
 
-            if (DateTime.UtcNow.Ticks % 2 == 0)
-            {
-                return View("LocalesA", viewModel);
-            }
-            else
-            {
-                return View("LocalesB", viewModel);
-            }
+            return View("Locales", viewModel);
         }
     }
 }

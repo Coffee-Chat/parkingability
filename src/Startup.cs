@@ -25,6 +25,7 @@ namespace ParkingAbilityServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IRepository, MemoryRepository>();
+            services.AddSingleton<IFlightProvider, MemoryFlightProvider>();
             services.AddControllersWithViews();
         }
 

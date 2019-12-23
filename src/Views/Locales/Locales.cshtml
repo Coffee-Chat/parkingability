@@ -1,0 +1,39 @@
+﻿@model LocaleViewModel
+
+@section Scripts
+{
+    @{
+        string appInsightsKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY");
+        bool enableAppInsights = !string.IsNullOrEmpty(appInsightsKey);
+    }
+    @if (enableAppInsights)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".view-source-standard").click(function () {
+                    window.appInsights.trackEvent({ name: 'InlineSourceContentClicked' });
+                });
+                $(".view-source-custom").click(function () {
+                    window.appInsights.trackEvent({ name: 'CustomSourceContentClicked' });
+                });
+            });
+        </script>
+    }
+}
+
+@{
+    string flight = ViewData["Flight"] as string;
+    if (flight == "Standard")
+    {
+        <p><a href="@Model.SourceUrl" target="_blank" class="view-source-standard" id="@Model.Id">View @Model.Id</a></p>
+        <div>
+            <iframe src="@Model.SourceUrl" draggable="false" scrolling="auto">
+            </iframe>
+        </div>
+    }
+    else if (flight == "Custom")
+    {
+        <p><a href="@Model.SourceUrl" target="_blank" class="view-source-custom">View @Model.Id</a></p>
+        @Html.Raw(Model.ReadContent())
+    }
+}

@@ -10,36 +10,33 @@ namespace ParkingAbilityServer.BusinessLayer
     {
         public MemoryRepository(IWebHostEnvironment env)
         {
-            this.env = env;
+            EntityToViewModel = new Dictionary<string, LocaleViewModel>()
+            {
+                {
+                    "WA", new LocaleViewModel()
+                    {
+                        Id = "WA",
+                        SourceUrl = "https://www.dol.wa.gov/vehicleregistration/parkinguse.html",
+                        ContentUrl =  Path.Combine(env.WebRootPath, "WA.html")
+                    }
+                },
+                {
+                    "Seattle", new LocaleViewModel()
+                    {
+                        Id = "Seattle",
+                        SourceUrl = "https://www.seattle.gov/transportation/projects-and-programs/programs/parking-program/disabled-parking",
+                        ContentUrl = Path.Combine(env.WebRootPath, "Seattle.html")
+                    }
+                }
+            };
         }
 
-        private static readonly Dictionary<string, LocaleViewModel> keyValuePairs = new Dictionary<string, LocaleViewModel>()
-        {
-            {
-                "WA", new LocaleViewModel()
-                {
-                    Id = "WA",
-                    SourceUrl = "https://www.dol.wa.gov/vehicleregistration/parkinguse.html",
-                    ContentUrl = "WA.html"
-                }
-            },
-            {
-                "Seattle", new LocaleViewModel()
-                {
-                    Id = "Seattle",
-                    SourceUrl = "https://www.seattle.gov/transportation/projects-and-programs/programs/parking-program/disabled-parking",
-                    ContentUrl = "Seattle.html"
-                }
-            }
-        };
-
-        private readonly IWebHostEnvironment env;
+        private readonly Dictionary<string, LocaleViewModel> EntityToViewModel;
 
         public Task<LocaleViewModel> LoadAsync(string id)
         {
-            if (keyValuePairs.TryGetValue(id, out LocaleViewModel viewModel))
+            if (EntityToViewModel.TryGetValue(id, out LocaleViewModel viewModel))
             {
-                viewModel.ContentUrl = Path.Combine(env.WebRootPath, viewModel.ContentUrl);
                 return Task.FromResult(viewModel);
             }
             return null;
