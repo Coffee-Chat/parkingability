@@ -6,34 +6,127 @@
         string appInsightsKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY");
         bool enableAppInsights = !string.IsNullOrEmpty(appInsightsKey);
     }
+    <script type="text/javascript">
+        var enableAppInsights = false;
+        function enableGeolocationContent() {
+            var contentBox = $(".content-box");
+            var consentBox = $(".consent-box");
+            if (navigator.geolocation) {
+                consentBox.removeClass("invisible");
+                contentBox.hide(0);
+                consentBox.show(0);
+            }
+            else {
+                contentBox.removeClass("invisible");
+                contentBox.show(0);
+                consentBox.hide(0);
+            }
+        }
+        $(document).ready(function () {
+            enableGeolocationContent();
+        });
+    </script>
+
     @if (enableAppInsights)
     {
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $(".view-source-standard").click(function () {
-                    window.appInsights.trackEvent({ name: 'InlineSourceContentClicked' });
-                });
-                $(".view-source-custom").click(function () {
-                    window.appInsights.trackEvent({ name: 'CustomSourceContentClicked' });
-                });
+    <script type="text/javascript">
+        enableAppInsights = true;
+        $(document).ready(function () {
+            enableGeolocationContent();
+            $(".view-source-standard").click(function () {
+                window.appInsights.trackEvent({ name: 'InlineSourceContentClicked' });
             });
-        </script>
+            $(".view-source-custom").click(function () {
+                window.appInsights.trackEvent({ name: 'CustomSourceContentClicked' });
+            });
+            $("consentAccept").click(function () {
+                window.appInsights.trackEvent({ name: 'LocationConsentClicked' });
+            });
+            $("consentDecline").click(function () {
+                window.appInsights.trackEvent({ name: 'LocationConsentDeclinedClicked' });
+            });
+        });
+    </script>
     }
-}
 
-@{
+    <script type="text/javascript">
+        var geolocationId;
+        function handleConsent(button) {
+            $(".consent-box").hide(200, function () {
+                $(".consent-box").addClass("invisible");
+                var contentBox = $(".content-box");
+                contentBox.removeClass("invisible");
+                contentBox.show(200);
+            });
+            if (button.id === "consentAccept") {
+                geolocationId = navigator.geolocation.watchPosition(handleGeolocation, handleGeolocationError);
+            }
+            else if (geolocationId) {
+                navigator.geolocation.clearWatch(geolocationId);
+            }
+        }
+
+        function handleGeolocation(position) {
+            var url = "/api" + window.location.pathname + "/locations"
+            var request = {
+                "latitude": position.coords.latitude,
+                "longitude": position.coords.longitude,
+                "timestamp": position.timestamp
+            };
+            fetch(url, {
+                method: 'post',
+                headers: new Headers({
+                 'Content-Type': 'application/json'
+               }),
+                body: JSON.stringify(request)
+            }).then(function (response) {
+            });
+        }
+
+        function handleGeolocationError(error) {
+            if (enableAppInsights) {
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        window.appInsights.trackEvent({ name: 'LocationPermisionDeclined' });
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        appInsights.trackTrace({ message: "Location information is unavailable." });
+                        break;
+                    case error.TIMEOUT:
+                        appInsights.trackTrace({ message: "The request to get user location timed out." });
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        appInsights.trackException({ exception: new Error("An unknown error occurred.") });
+                        break;
+                }
+            }
+        }
+    </script>
+}
+<form class="consent-box invisible">
+    <p>
+        Would you be willing to provide you current location to improve disability parking support for this area?
+    </p>
+    <input type="button" id="consentAccept" class="consent-box-btn" value="Accept" onclick="handleConsent(this)" />
+    <input type="button" id="consentDecline" class="consent-box-btn" value="Decline" onclick="handleConsent(this)" />
+</form>
+<div class="content-box invisible">
+    @{
     string flight = ViewData["Flight"] as string;
-    if (flight == "Standard")
-    {
-        <p><a href="@Model.SourceUrl" target="_blank" class="view-source-standard" id="@Model.Id">View @Model.Id</a></p>
-        <div>
-            <iframe src="@Model.SourceUrl" draggable="false" scrolling="auto">
-            </iframe>
-        </div>
     }
-    else if (flight == "Custom")
-    {
+    @if (flight == "Standard")
+        {
+    <p><a href="@Model.SourceUrl" target="_blank" class="view-source-standard" id="@Model.Id">View @Model.Id</a></p>
+    <div>
+        <iframe src="@Model.SourceUrl" draggable="false" scrolling="auto">
+        </iframe>
+    </div>
+        }
+    @{
+        else if(flight == "Custom")
+        {
         <p><a href="@Model.SourceUrl" target="_blank" class="view-source-custom">View @Model.Id</a></p>
         @Html.Raw(Model.ReadContent())
+        }
     }
-}
+</div>
