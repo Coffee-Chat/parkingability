@@ -2,12 +2,7 @@
 
 @section Scripts
 {
-    @{
-        string appInsightsKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY");
-        bool enableAppInsights = !string.IsNullOrEmpty(appInsightsKey);
-    }
     <script type="text/javascript">
-        var enableAppInsights = false;
         function enableGeolocationContent() {
             var contentBox = $(".content-box");
             var consentBox = $(".consent-box");
@@ -22,15 +17,7 @@
                 consentBox.hide(0);
             }
         }
-        $(document).ready(function () {
-            enableGeolocationContent();
-        });
-    </script>
 
-    @if (enableAppInsights)
-    {
-    <script type="text/javascript">
-        enableAppInsights = true;
         $(document).ready(function () {
             enableGeolocationContent();
             $(".view-source-standard").click(function () {
@@ -46,17 +33,14 @@
                 window.appInsights.trackEvent({ name: 'LocationConsentDeclinedClicked' });
             });
         });
-    </script>
-    }
 
-    <script type="text/javascript">
         var geolocationId;
         function handleConsent(button) {
-            $(".consent-box").hide(200, function () {
+            $(".consent-box").hide(400, function () {
                 $(".consent-box").addClass("invisible");
                 var contentBox = $(".content-box");
                 contentBox.removeClass("invisible");
-                contentBox.show(200);
+                contentBox.show(400);
             });
             if (button.id === "consentAccept") {
                 geolocationId = navigator.geolocation.watchPosition(handleGeolocation, handleGeolocationError);
@@ -84,22 +68,20 @@
         }
 
         function handleGeolocationError(error) {
-            if (enableAppInsights) {
-                switch (error.code) {
+            switch (error.code) {
                     case error.PERMISSION_DENIED:
                         window.appInsights.trackEvent({ name: 'LocationPermisionDeclined' });
                         break;
                     case error.POSITION_UNAVAILABLE:
-                        appInsights.trackTrace({ message: "Location information is unavailable." });
+                        window.appInsights.trackTrace({ message: "Location information is unavailable." });
                         break;
                     case error.TIMEOUT:
-                        appInsights.trackTrace({ message: "The request to get user location timed out." });
+                        window.appInsights.trackTrace({ message: "The request to get user location timed out." });
                         break;
                     case error.UNKNOWN_ERROR:
-                        appInsights.trackException({ exception: new Error("An unknown error occurred.") });
+                        window.appInsights.trackException({ exception: new Error("An unknown error occurred.") });
                         break;
                 }
-            }
         }
     </script>
 }
@@ -115,13 +97,13 @@
     string flight = ViewData["Flight"] as string;
     }
     @if (flight == "Standard")
-        {
+    {
     <p><a href="@Model.SourceUrl" target="_blank" class="view-source-standard" id="@Model.Id">View @Model.Id</a></p>
     <div>
         <iframe src="@Model.SourceUrl" draggable="false" scrolling="auto">
         </iframe>
     </div>
-        }
+    }
     @{
         else if(flight == "Custom")
         {

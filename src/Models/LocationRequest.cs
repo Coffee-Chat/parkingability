@@ -7,11 +7,11 @@ namespace ParkingAbilityServer.Models
     {
         [Display(Name = "latitude")]
         [Range(-90.0, 90.0, ErrorMessage = "latitude range is between -90 and 90.")]
-        public float Latitude { get; set; }
+        public double Latitude { get; set; }
 
         [Display(Name = "longitude")]
         [Range(-180.0, 180.0, ErrorMessage = "longitude range is between -180 and 180.")]
-        public float Longitude { get; set; }
+        public double Longitude { get; set; }
 
         [Display(Name = "timestamp")]
         [Required]
