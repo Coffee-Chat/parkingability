@@ -8,10 +8,10 @@ namespace ParkingAbilityServer.Controllers
     [Route("locales")]
     public class LocalesController : Controller
     {
-        private readonly IRepository repository;
+        private readonly IContentRepository repository;
         private readonly IFlightProvider flightProvider;
 
-        public LocalesController(IRepository repository, IFlightProvider flightProvider)
+        public LocalesController(IContentRepository repository, IFlightProvider flightProvider)
         {
             this.repository = repository;
             this.flightProvider = flightProvider;

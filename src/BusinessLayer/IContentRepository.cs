@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace ParkingAbilityServer.BusinessLayer
 {
-    public interface IRepository
+    public interface IContentRepository
     {
         Task<LocaleViewModel> LoadAsync(string id);
     }

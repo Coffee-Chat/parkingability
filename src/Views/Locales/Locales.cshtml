@@ -3,6 +3,7 @@
 @section Scripts
 {
     <script type="text/javascript">
+        var geolocationId;
         function enableGeolocationContent() {
             var contentBox = $(".content-box");
             var consentBox = $(".consent-box");
@@ -26,26 +27,33 @@
             $(".view-source-custom").click(function () {
                 window.appInsights.trackEvent({ name: 'CustomSourceContentClicked' });
             });
-            $("consentAccept").click(function () {
+            $("#consentAccept").on("click", function () {
                 window.appInsights.trackEvent({ name: 'LocationConsentClicked' });
+                $(".consent-box").fadeOut(400, "linear", handleConsent);
             });
-            $("consentDecline").click(function () {
+            $("#consentDecline").on("click", function () {
                 window.appInsights.trackEvent({ name: 'LocationConsentDeclinedClicked' });
+                $(".consent-box").fadeOut(400, "linear", handleDecline);
             });
         });
 
-        var geolocationId;
-        function handleConsent(button) {
-            $(".consent-box").hide(400, function () {
-                $(".consent-box").addClass("invisible");
-                var contentBox = $(".content-box");
-                contentBox.removeClass("invisible");
-                contentBox.show(400);
-            });
-            if (button.id === "consentAccept") {
-                geolocationId = navigator.geolocation.watchPosition(handleGeolocation, handleGeolocationError);
+        function handleConsent() {
+            var contentBox = $(".content-box");
+            contentBox.removeClass("invisible");
+            contentBox.fadeIn(400);
+
+            if (geolocationId) {
+                navigator.geolocation.clearWatch(geolocationId);
             }
-            else if (geolocationId) {
+            geolocationId = navigator.geolocation.watchPosition(handleGeolocation, handleGeolocationError);
+        }
+
+        function handleDecline() {
+            var contentBox = $(".content-box");
+            contentBox.removeClass("invisible");
+            contentBox.fadeIn(400);
+
+            if (geolocationId) {
                 navigator.geolocation.clearWatch(geolocationId);
             }
         }
@@ -89,8 +97,8 @@
     <p>
         Would you be willing to provide you current location to improve disability parking support for this area?
     </p>
-    <input type="button" id="consentAccept" class="consent-box-btn" value="Accept" onclick="handleConsent(this)" />
-    <input type="button" id="consentDecline" class="consent-box-btn" value="Decline" onclick="handleConsent(this)" />
+    <input type="button" id="consentAccept" class="consent-box-btn" value="Accept"/>
+    <input type="button" id="consentDecline" class="consent-box-btn" value="Decline"/>
 </form>
 <div class="content-box invisible">
     @{

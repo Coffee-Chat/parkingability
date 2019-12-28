@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Auth;
@@ -45,10 +47,10 @@ namespace ParkingAbilityServer
             }
             else
             {
-                NewTokenAndFrequency tokenAndFrequency = TokenRenewer(this, CancellationToken.None).GetAwaiter().GetResult();
+                NewTokenAndFrequency tokenAndFrequency = TokenRenewerAsync(this, CancellationToken.None).GetAwaiter().GetResult();
                 TokenCredential tokenCredential = new TokenCredential(
                     initialToken: tokenAndFrequency.Token,
-                    periodicTokenRenewer: TokenRenewer,
+                    periodicTokenRenewer: TokenRenewerAsync,
                     state: null,
                     renewFrequency: tokenAndFrequency.Frequency.Value);
 
@@ -56,8 +58,9 @@ namespace ParkingAbilityServer
             }
 
             services.AddSingleton<ILocationsRepository, StorageLocationsRepository>();
-            services.AddSingleton<IRepository, MemoryRepository>();
+            services.AddSingleton<IContentRepository, FileContentRepository>();
             services.AddSingleton<IFlightProvider, MemoryFlightProvider>();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddControllersWithViews(options => 
             {
                 options.ModelBinderProviders.Insert(0, new HeadersModelBinderProvider());
@@ -79,6 +82,23 @@ namespace ParkingAbilityServer
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en-US"),
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+
+                // Formatting numbers, dates, etc.
+                SupportedCultures = supportedCultures,
+
+                // UI strings that we have localized.
+                SupportedUICultures = supportedCultures
+            });
+
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -93,7 +113,7 @@ namespace ParkingAbilityServer
             });
         }
 
-        private async Task<NewTokenAndFrequency> TokenRenewer(object state, CancellationToken cancellationToken)
+        private static async Task<NewTokenAndFrequency> TokenRenewerAsync(object state, CancellationToken cancellationToken)
         {
             AppAuthenticationResult authResult = await serviceTokenProvider.GetAuthenticationResultAsync("https://storage.azure.com/", cancellationToken: cancellationToken);
 

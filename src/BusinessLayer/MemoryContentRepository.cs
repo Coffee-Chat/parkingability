@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using ParkingAbilityServer.Models;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using Validation;
 
 namespace ParkingAbilityServer.BusinessLayer
 {
-    public class MemoryRepository : IRepository
+    public class MemoryContentRepository : IContentRepository
     {
-        public MemoryRepository(IWebHostEnvironment environment)
+        public MemoryContentRepository(IWebHostEnvironment environment)
         {
             Requires.NotNull(environment, nameof(environment));
             EntityToViewModel = new Dictionary<string, LocaleViewModel>()
@@ -19,7 +20,7 @@ namespace ParkingAbilityServer.BusinessLayer
                     {
                         Id = "WA",
                         SourceUrl = "https://www.dol.wa.gov/vehicleregistration/parkinguse.html",
-                        ContentUrl =  Path.Combine(environment.WebRootPath, "WA.html")
+                        ContentUrl =  Path.Combine(environment.WebRootPath, "content/en-US", "WA.html")
                     }
                 },
                 {
@@ -27,7 +28,7 @@ namespace ParkingAbilityServer.BusinessLayer
                     {
                         Id = "Seattle",
                         SourceUrl = "https://www.seattle.gov/transportation/projects-and-programs/programs/parking-program/disabled-parking",
-                        ContentUrl = Path.Combine(environment.WebRootPath, "Seattle.html")
+                        ContentUrl = Path.Combine(environment.WebRootPath, "content/en-US", "Seattle.html")
                     }
                 }
             };

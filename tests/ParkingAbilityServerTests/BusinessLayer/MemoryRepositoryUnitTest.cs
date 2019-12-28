@@ -12,7 +12,7 @@ namespace ParkingAbilityServerTests.BusinessLayer
     [TestClass]
     public class MemoryRepositoryUnitTest
     {
-        private MemoryRepository repository;
+        private MemoryContentRepository repository;
 
         [TestInitialize]
         public void TestInitialize()
@@ -23,7 +23,7 @@ namespace ParkingAbilityServerTests.BusinessLayer
                 .Setup(e => e.WebRootPath)
                 .Returns(@"..\..\..\..\..\src\wwwroot")
                 .Verifiable();
-            repository = new MemoryRepository(environment.Object);
+            repository = new MemoryContentRepository(environment.Object);
         }
 
         [TestMethod, TestCategory("L0")]
