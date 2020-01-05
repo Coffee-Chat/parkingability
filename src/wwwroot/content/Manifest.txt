@@ -1,2 +1,4 @@
 ﻿Seattle,https://www.seattle.gov/transportation/projects-and-programs/programs/parking-program/disabled-parking
 WA,https://www.dol.wa.gov/vehicleregistration/parkinguse.html
+Portland,https://www.portlandoregon.gov/transportation/64922
+OR,https://www.oregon.gov/ODOT/DMV/pages/driverid/disparking.aspx
