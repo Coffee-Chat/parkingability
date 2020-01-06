@@ -11,7 +11,9 @@ namespace ParkingAbilityServer.BusinessLayer
         private static readonly Dictionary<string, Func<bool>> viewToFlight = new Dictionary<string, Func<bool>>()
         {
             { "WA",  () => { return randomNumberGenerator.Next(0, 100) > 50; }},
-            { "Seattle",  () => { return randomNumberGenerator.Next(0, 100) > 50; }}
+            { "Seattle",  () => { return randomNumberGenerator.Next(0, 100) > 50; }},
+            { "OR",  () => { return randomNumberGenerator.Next(0, 100) > 50; }},
+            { "Portland",  () => { return randomNumberGenerator.Next(0, 100) > 50; }}
         };
 
         public Task<string> CalculateFlightAsync(string id)

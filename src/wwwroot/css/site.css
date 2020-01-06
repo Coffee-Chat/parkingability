@@ -101,3 +101,24 @@ body {
     white-space: nowrap;
     line-height: 60px; /* Vertically center the text there */
 }
+
+.tr.even tr:nth-child(odd) {
+    background-color: #efefef
+}
+.tr.even.first, tr:first-child {
+    color: white;
+    background-color: #666
+}
+
+td {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 5px;
+    font-size: 12px;
+    font-family: 'Helvetica Neue', Arial, sans-serif
+}
+
+table .first, table tr:first-child td {
+    color: white;
+    text-shadow: #333 0 1px 0;
+}
