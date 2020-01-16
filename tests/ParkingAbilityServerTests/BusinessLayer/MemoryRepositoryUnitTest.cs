@@ -3,9 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using ParkingAbilityServer.BusinessLayer;
 using ParkingAbilityServer.Models;
-using System.IO;
 using System.Threading.Tasks;
-using Validation;
 
 namespace ParkingAbilityServerTests.BusinessLayer
 {
@@ -21,7 +19,7 @@ namespace ParkingAbilityServerTests.BusinessLayer
 
             environment
                 .Setup(e => e.WebRootPath)
-                .Returns(@"..\..\..\..\..\src\wwwroot")
+                .Returns(@"../../../../../src/wwwroot")
                 .Verifiable();
             repository = new MemoryContentRepository(environment.Object);
         }
