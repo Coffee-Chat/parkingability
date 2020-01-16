@@ -11,7 +11,17 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  azureSubscription: Deployment Principal Connection
 
 steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK'
+  inputs:
+    version: 3.1.x
+    performMultiLevelLookup: true
+
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- script: dotnet test ~/tests/ParkingAbilityServerTests/ParkingAbilityServerTests.csproj --no-build --no-restore --filter TestCategory=L0|L1|L2 
+  displayName: 'dotnet test L0->L2'
