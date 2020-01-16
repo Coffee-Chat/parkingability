@@ -14,13 +14,6 @@ variables:
   azureSubscription: Deployment Principal Connection
 
 steps:
-- task: DotNetCoreCLI@2
-  inputs:
-    command: restore
-    projects: '**/*.csproj'
-    feedsToUse: config
-    nugetConfigPath: './Nuget.config'    # Relative to root of the repository
-
 - task: UseDotNet@2
   displayName: 'Install .NET Core SDK'
   inputs:
@@ -28,11 +21,18 @@ steps:
     performMultiLevelLookup: true
 
 - task: DotNetCoreCLI@2
+  inputs:
+    command: restore
+    projects: '**/*.csproj'
+    feedsToUse: config
+    nugetConfigPath: './Nuget.config'    # Relative to root of the repository
+
+- task: DotNetCoreCLI@2
   displayName: Build
   inputs:
     command: build
     projects: '**/*.sln'
-    arguments: '--configuration Release'
+    arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   inputs:
