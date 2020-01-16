@@ -21,6 +21,7 @@ steps:
     performMultiLevelLookup: true
 
 - task: DotNetCoreCLI@2
+  displayName: 'Nuget Restore'
   inputs:
     command: restore
     projects: '**/*.csproj'
@@ -35,7 +36,8 @@ steps:
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Test'
   inputs:
     command: test
-    projects: '**/*tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+    projects: '**/*Tests*.csproj'
+    arguments: '--configuration $(buildConfiguration) --filter TestCategory=L0|TestCategory=L1|TestCategory=L2'
