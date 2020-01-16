@@ -1,8 +1,7 @@
 # Parking Ability
+[![Build Status](https://dev.azure.com/ParkingAbility/Parking%20Ability/_apis/build/status/stack111.parkingability?branchName=master)](https://dev.azure.com/ParkingAbility/Parking%20Ability/_build/latest?definitionId=1&branchName=master)
 
 ## Developer Setup
-
-[![Build Status](https://dev.azure.com/ParkingAbility/Parking%20Ability/_apis/build/status/stack111.parkingability?branchName=master)](https://dev.azure.com/ParkingAbility/Parking%20Ability/_build/latest?definitionId=1&branchName=master)
 
 1. Contact repository to receive Azure AD access to the resources necessary to run locally.
 2. Run the developer setup script. TBD
