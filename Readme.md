@@ -1,4 +1,5 @@
 # Parking Ability
+
 [![Build Status](https://dev.azure.com/ParkingAbility/Parking%20Ability/_apis/build/status/stack111.parkingability?branchName=master)](https://dev.azure.com/ParkingAbility/Parking%20Ability/_build/latest?definitionId=1&branchName=master)
 
 ## Developer Setup
