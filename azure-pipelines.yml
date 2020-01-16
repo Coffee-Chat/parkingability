@@ -14,14 +14,28 @@ variables:
   azureSubscription: Deployment Principal Connection
 
 steps:
+- task: DotNetCoreCLI@2
+  inputs:
+    command: restore
+    projects: '**/*.csproj'
+    feedsToUse: config
+    nugetConfigPath: NuGet.config    # Relative to root of the repository
+
 - task: UseDotNet@2
   displayName: 'Install .NET Core SDK'
   inputs:
     version: 3.1.x
     performMultiLevelLookup: true
 
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: build
+    projects: '**/*.sln'
+    arguments: '--configuration Release'
 
-- script: dotnet test ~/tests/ParkingAbilityServerTests/ParkingAbilityServerTests.csproj --no-build --no-restore --filter TestCategory=L0|TestCategory=L1|TestCategory=L2 
-  displayName: 'dotnet test L0->L2'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
