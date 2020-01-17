@@ -63,7 +63,7 @@ steps:
     SlotName: 'production'
     packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
     enableCustomDeployment: true
-    DeploymentType: 'webDeploy'
+    DeploymentType: zipDeploy
     TakeAppOfflineFlag: false
     ExcludeFilesFromAppDataFlag: false
     RenameFilesFlag: false
