@@ -11,7 +11,6 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  azureSubscription: Deployment Principal Connection
 
 steps:
 - task: UseDotNet@2
@@ -26,7 +25,7 @@ steps:
     command: restore
     projects: '**/*.csproj'
     feedsToUse: config
-    nugetConfigPath: './Nuget.config'    # Relative to root of the repository
+    nugetConfigPath: './build/Nuget.config'    # Relative to root of the repository
 
 - task: DotNetCoreCLI@2
   displayName: Build
@@ -40,4 +39,4 @@ steps:
   inputs:
     command: test
     projects: '**/*Tests*.csproj'
-    arguments: '--configuration $(buildConfiguration) --filter TestCategory=L0|TestCategory=L1|TestCategory=L2 --collect "Code coverage" --settings "./test.runsettings"'
+    arguments: '--configuration $(buildConfiguration) --filter TestCategory=L0|TestCategory=L1|TestCategory=L2 --collect "Code coverage" --settings "./build/test.runsettings"'
