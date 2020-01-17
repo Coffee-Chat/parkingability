@@ -41,3 +41,29 @@ steps:
     command: test
     projects: '**/*Tests*.csproj'
     arguments: '--configuration $(buildConfiguration) --filter TestCategory=L0|TestCategory=L1|TestCategory=L2 --collect "Code coverage" --settings "./build/test.runsettings"'
+
+- task: ArchiveFiles@2
+  displayName: 'Zip'
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+
+- task: AzureRmWebAppDeployment@4
+  displayName: 'App Deploy'
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Deployment Principal Connection'
+    appType: 'webApp'
+    WebAppName: 'parkingability'
+    deployToSlotOrASE: true
+    ResourceGroupName: 'Compute'
+    SlotName: 'production'
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+    enableCustomDeployment: true
+    DeploymentType: 'webDeploy'
+    TakeAppOfflineFlag: false
+    ExcludeFilesFromAppDataFlag: false
+    RenameFilesFlag: false
