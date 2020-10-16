@@ -2,7 +2,9 @@
 
 ## Project Home
 
-The Azure Dev Ops project home page for[Parking Ability](https://dev.azure.com/ParkingAbility/) contains the Epics, Issues, and Work items to track priorities.
+The Azure Dev Ops project home page for [Parking Ability](https://dev.azure.com/ParkingAbility/) contains the Epics, Issues, and Work items to track priorities.
+
+[![Board Status](https://dev.azure.com/ParkingAbility/cdf98ffd-21bb-4e10-94a2-046fbaf7bfaa/540dcafa-d6d6-40a2-bac3-78c826e510bd/_apis/work/boardbadge/63027c32-2e59-4591-86e4-148f1c08abac?columnOptions=1)](https://dev.azure.com/ParkingAbility/cdf98ffd-21bb-4e10-94a2-046fbaf7bfaa/_boards/board/t/540dcafa-d6d6-40a2-bac3-78c826e510bd/Microsoft.EpicCategory/)
 
 ## Build
 
