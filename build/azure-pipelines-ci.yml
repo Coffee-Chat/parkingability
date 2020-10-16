@@ -51,19 +51,8 @@ steps:
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
 
-- task: AzureRmWebAppDeployment@4
-  displayName: 'App Deploy'
+- task: PublishBuildArtifacts@1
   inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Deployment Principal Connection'
-    appType: 'webApp'
-    WebAppName: 'parkingability'
-    deployToSlotOrASE: true
-    ResourceGroupName: 'Compute'
-    SlotName: 'production'
-    packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
-    enableCustomDeployment: true
-    DeploymentType: zipDeploy
-    TakeAppOfflineFlag: false
-    ExcludeFilesFromAppDataFlag: false
-    RenameFilesFlag: false
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
