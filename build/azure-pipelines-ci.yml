@@ -44,7 +44,8 @@ steps:
 - task: CopyFiles@2
   inputs:
     contents: 'src/bin/$(buildConfiguration)/**/*'
-    targetFolder: '$(Build.ArtifactStagingDirectory)/services'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/service'
+    flattenFolders: true
 
 - task: CopyFiles@2
   inputs:
@@ -54,7 +55,7 @@ steps:
 - task: ArchiveFiles@2
   displayName: 'Zip'
   inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/services'
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/service'
     includeRootFolder: true
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
