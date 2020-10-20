@@ -2,3 +2,4 @@
 WA,https://www.dol.wa.gov/vehicleregistration/parkinguse.html
 Portland,https://www.portlandoregon.gov/transportation/64922
 OR,https://www.oregon.gov/ODOT/DMV/pages/driverid/disparking.aspx
+Chicago,https://www.chicago.gov/city/en/depts/mopd/supp_info/information_for_motoristswithdisabilities.html
