@@ -51,7 +51,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    contents: 'src/bin/$(BuildConfiguration)/netcoreapp3.1/$(RuntimeIdentifier)/publish/**/*'
+    contents: 'src/bin/$(BuildConfiguration)/netcoreapp3.1/win-x64/publish/**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)/service'
 
 - task: CopyFiles@2
