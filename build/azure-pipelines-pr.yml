@@ -39,7 +39,7 @@ steps:
   inputs:
     command: publish
     projects: '**/*.sln'
-    arguments: '--configuration $(buildConfiguration) --no-build'
+    arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   displayName: 'Test'
