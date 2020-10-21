@@ -51,12 +51,12 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    contents: 'src/bin/**/publish/**'
+    contents: 'src/bin/$(BuildConfiguration)/netcoreapp3.1/$(RuntimeIdentifier)/publish/**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)/service'
 
 - task: CopyFiles@2
   inputs:
-    contents: '/tests/**/bin/**/publish/**'
+    contents: 'tests/**/bin/**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)/tests'
 
 - task: ArchiveFiles@2
