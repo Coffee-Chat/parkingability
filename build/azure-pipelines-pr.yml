@@ -50,8 +50,9 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    contents: 'src/bin/$(buildConfiguration)/**/*'
+    contents: 'src/bin/$(buildConfiguration)/**/*.zip'
     targetFolder: '$(Build.ArtifactStagingDirectory)/service'
+    flattenFolders: true
 
 - task: CopyFiles@2
   inputs:
@@ -61,20 +62,5 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-
-- task: ArchiveFiles@2
-  displayName: 'Zip'
-  inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/service'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     ArtifactName: 'drop'
     publishLocation: 'Container'
