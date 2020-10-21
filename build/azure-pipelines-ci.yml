@@ -36,19 +36,27 @@ steps:
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: publish
+    projects: '**/*.sln'
+    arguments: '--configuration $(buildConfiguration) --no-build'
+
+- task: DotNetCoreCLI@2
   displayName: 'Test'
   inputs:
     command: test
     projects: '**/*Tests*.csproj'
     arguments: '--configuration $(buildConfiguration) --filter TestCategory=L0|TestCategory=L1|TestCategory=L2 --collect "Code coverage" --settings "./build/test.runsettings"'
+
 - task: CopyFiles@2
   inputs:
-    contents: 'src/bin/$(buildConfiguration)/**/*'
+    contents: 'src/bin/$(buildConfiguration)/**/publish/**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)/service'
 
 - task: CopyFiles@2
   inputs:
-    contents: 'tests/**/bin/**/*'
+    contents: 'tests/**/bin/**/publish/**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)/tests'
 
 - task: ArchiveFiles@2
