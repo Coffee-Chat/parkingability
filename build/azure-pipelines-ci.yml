@@ -45,7 +45,6 @@ steps:
   inputs:
     contents: 'src/bin/$(buildConfiguration)/**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)/service'
-    flattenFolders: true
 
 - task: CopyFiles@2
   inputs:
