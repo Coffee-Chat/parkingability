@@ -51,13 +51,19 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    contents: '**/publish/**/*'
+    contents: 'src/bin/$(buildConfiguration)/**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)/service'
 
 - task: CopyFiles@2
   inputs:
     contents: 'tests/**/bin/**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)/tests'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
 
 - task: ArchiveFiles@2
   displayName: 'Zip'
@@ -70,6 +76,6 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     ArtifactName: 'drop'
     publishLocation: 'Container'
