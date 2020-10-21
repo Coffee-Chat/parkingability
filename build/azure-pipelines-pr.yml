@@ -50,12 +50,12 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    contents: 'src/bin/*publish/**/*'
+    contents: '/src/bin/*publish/**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)/service'
 
 - task: CopyFiles@2
   inputs:
-    contents: 'tests/*bin/*publish/**/*'
+    contents: '/tests/*bin/*publish/**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)/tests'
 
 - task: ArchiveFiles@2
