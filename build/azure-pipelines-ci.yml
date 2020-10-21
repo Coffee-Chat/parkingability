@@ -38,7 +38,7 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: Publish
   inputs:
-    command: Publish
+    command: publish
     projects: '**/*.sln'
     arguments: '--configuration $(buildConfiguration) --no-build'
 
