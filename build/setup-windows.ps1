@@ -52,7 +52,7 @@ if ($IsAdmin -eq $false)
 # Install VSCode https://github.com/PowerShell/vscode-powershell
 
 &powershell -NoProfile -ExecutionPolicy unrestricted -Command `
-"&([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/PowerShell/vscode-powershell/master/scripts/Install-VSCode.ps1'))) -AdditionalExtensions ms-dotnettools.csharp,docsmsft.docs-authoring-pack,dbaeumer.vscode-eslint,eamodio.gitlens,ms-vscode.vscode-typescript-tslint-plugin,visualstudioexptteam.vscodeintellicode,redhat.vscode-yaml,ms-vsliveshare.vsliveshare-audio,ms-vsliveshare.vsliveshare,ms-vscode.powershell,ms-azure-devops.azure-pipelines,azurite.azurite"
+"&([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/PowerShell/vscode-powershell/master/scripts/Install-VSCode.ps1'))) -AdditionalExtensions ms-dotnettools.csharp,docsmsft.docs-authoring-pack,dbaeumer.vscode-eslint,eamodio.gitlens,ms-vscode.vscode-typescript-tslint-plugin,visualstudioexptteam.vscodeintellicode,redhat.vscode-yaml,ms-vsliveshare.vsliveshare-audio,ms-vsliveshare.vsliveshare,ms-vscode.powershell,ms-azure-devops.azure-pipelines,azurite.azurite,github.vscode-pull-request-github"
 
 dotnet dev-certs https --trust
 
