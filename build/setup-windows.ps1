@@ -62,3 +62,4 @@ $PfxFilePath = ".\localhost.pfx"
 dotnet dev-certs https -ep $PfxFilePath -p $NewPassword
 $PasswordSecure = ConvertTo-SecureString -String $NewPassword -Force -AsPlainText
 Import-PfxCertificate -Exportable -FilePath $PfxFilePath -CertStoreLocation 'Cert:\LocalMachine\My' -Password $PasswordSecure -Verbose
+Remove-Item $PfxFilePath
